@@ -1,0 +1,57 @@
+*{
+background-color:whitesmoke
+
+}
+
+
+main {
+    background-color: black;
+    height: 90vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#bem-vindo {
+    background-color: blue;
+    height: 80%;
+}
+#criar-conta {
+    background-color: pink;
+    height: 80%;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#formulario-criacao-conta {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60%;
+    width: 100%;
+    gap: 27px;
+}
+
+input {
+    height: 7%;
+    border-radius: 5px;
+    border-style: none;
+    background-color: rgb(229, 228, 228);
+    padding-left: 10px;
+}
+
+
+#btn-singup{
+    width: 20%;
+    height: 7%;
+    border-style: none;
+    background-color: rgb(0, 184, 120);
+    text-transform: uppercase;
+    border-radius: 7px;
+    color: white;
+}

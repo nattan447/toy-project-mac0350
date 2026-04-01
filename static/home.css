@@ -1,173 +1,191 @@
+:root {
+    --bg-body: #0f172a;
+    --bg-card: #1e293b;
+    --primary: #6366f1;
+    --primary-hover: #818cf8;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --input-bg: #334155;
+    --input-border: #475569;
+    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    height: 100vh;
+    overflow: hidden;
 }
 
 main {
-    background-color: black;
-    height: 100vh;
     display: flex;
-    flex-direction: row;
+    height: 100vh;
+    width: 100%;
 }
 
+/* Sidebar */
 #side-left-bar {
-    background-color: blue;
+    background-color: var(--bg-card);
+    width: 20%;
+    border-right: 1px solid var(--input-border);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 15%;
-    padding-top: 2%;
-    color: white;
-}
-
-#central-div {
-    background-color: pink;
-    width: 85%;
-    display: flex;
-    flex-direction: column;
-}
-
-#header-central-div {
-    background-color: black;
-    display: flex;
-    height: 10%;
-    flex-direction: row;
-    align-items: center;
-    padding-left: 5%;
-    gap: 5%;
-    color: white;
-}
-
-#header-tasks {
-    display: flex;
-    flex-direction: row;
-    padding: 20px;
-    justify-content: space-around;
-    font-weight: bold;
-}
-
-.btn-home {
-    width: 120px;
-    height: 40px;
-    border: none;
-    background-color: rgb(0, 184, 120);
-    border-radius: 7px;
-    color: white;
-    cursor: pointer;
-}
-
-#pesquisa-bar {
-    height: 50%;
-    background-color: transparent;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 40%;
-    gap: 10px;
-}
-
-#pesquisa-input {
-    height: 100%;
-    width: 80%;
-    border-radius: 5px;
-    border: none;
-    background-color: rgb(229, 228, 228);
-    padding-left: 10px;
-}
-
-#lupa {
-    height: 80%;
-    cursor: pointer;
-}
-
-#overlay, #overlay-edit {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-#modal, #modal-edit {
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 350px;
-    padding: 30px;
+    padding: 40px 20px;
     gap: 20px;
-    border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
 }
 
-#modal h1, #modal-edit h1 {
-    background-color: transparent;
-    font-size: 24px;
-    color: #333;
-}
-
-.input-task {
-    height: 45px;
-    width: 100%;
+#side-left-bar p, #side-left-bar a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 10px;
     border-radius: 8px;
-    border: 1px solid #ddd;
-    background-color: #f9f9f9;
-    padding-left: 10px;
-}
-
-#btn-model {
-    width: 100%;
-    height: 45px;
-    border: none;
-    background-color: rgb(0, 184, 120);
-    border-radius: 8px;
-    color: white;
-    font-weight: bold;
+    transition: 0.3s;
     cursor: pointer;
 }
 
-#fechar-tool-modal {
+#side-left-bar p:hover, #side-left-bar a:hover {
+    background-color: var(--input-bg);
+    color: var(--text-main);
+}
+
+/* Área Central */
+#central-div {
+    flex: 1;
     display: flex;
-    width: 100%;
-    justify-content: flex-end;
-    background-color: transparent;
-}
-
-#fechar-tool-modal p {
-    background-color: transparent;
-    color: red;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-#tasks { 
-    width: 100%;
-    padding: 20px;
+    flex-direction: column;
+    padding: 30px;
     overflow-y: auto;
 }
 
-.task {
+#header-central-div {
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    background-color: aqua;
-    width: 95%;
-    margin: 10px auto;
-    padding: 15px;
-    border-radius: 8px;
+    margin-bottom: 30px;
 }
 
-button:hover, #lupa:hover, #fechar-tool-modal p:hover {
-    opacity: 0.8;
+#pesquisa-bar {
+    display: flex;
+    align-items: center;
+    background: var(--input-bg);
+    border-radius: 10px;
+    padding: 5px 15px;
+    width: 300px;
+    border: 1px solid var(--input-border);
 }
-#overlay.mostrar {
+
+#pesquisa-input {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 8px;
+    width: 100%;
+}
+
+#pesquisa-input:focus { outline: none; }
+
+/* Grid de Tasks */
+#header-tasks {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 100px; /* Alinhamento fixo */
+    padding: 15px 25px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Estilo da Task (Resolve o erro de tamanho) */
+.task {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 100px; /* Deve ser igual ao header */
+    align-items: center;
+    background-color: var(--bg-card);
+    padding: 20px 25px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.2s;
+}
+
+.task:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary);
+}
+
+/* Modais */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(4px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+#modal, #modal-edit {
+    background: var(--bg-card);
+    padding: 40px;
+    border-radius: 20px;
+    width: 400px;
+    border: 1px solid var(--input-border);
+    box-shadow: var(--shadow);
+}
+
+#modal h1, #modal-edit h1 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    background: linear-gradient(to right, #818cf8, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Reutilizando botões do Signup */
+.btn-home, #btn-model {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-home:hover, #btn-model:hover {
+    background-color: var(--primary-hover);
+}
+
+.input-task {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    padding: 12px;
+    border-radius: 8px;
+    color: white;
+    margin-bottom: 15px;
+}
+/* Garante que quando a classe 'mostrar' for adicionada, o modal apareça */
+.overlay.mostrar {
     display: flex !important;
+}
+
+/* Ajuste para o modal de edição que usa style.display direto no JS */
+#overlay-edit {
+    display: none; /* Mantém escondido no início */
 }

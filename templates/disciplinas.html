@@ -1,0 +1,61 @@
+<div id="container-disciplinas" style="animation: fadeIn 0.3s ease;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h1 style="background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.8rem;">
+            Minhas Disciplinas
+        </h1>
+        <button class="btn-home" onclick="document.getElementById('overlay').classList.add('mostrar')">
+            + Nova Disciplina
+        </button>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+        {% if disciplinas %}
+            {% for disc in disciplinas %}
+                <div class="card-disciplina" 
+                     style="background: var(--bg-card); 
+                            padding: 25px; 
+                            border-radius: 15px; 
+                            border: 1px solid rgba(255, 255, 255, 0.05); 
+                            transition: all 0.3s ease;
+                            cursor: default;">
+                    
+                    <div style="width: 40px; height: 40px; background: var(--input-bg); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                        <span style="color: var(--primary); font-weight: bold;">{{ disc.nome[0] | upper }}</span>
+                    </div>
+
+                    <h3 style="color: var(--text-main); margin-bottom: 8px; font-size: 1.1rem;">{{ disc.nome }}</h3>
+                    
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">
+                        ID da Disciplina: #{{ disc.id }}
+                    </p>
+
+                    <div style="display: flex; justify-content: flex-end; border-top: 1px solid var(--input-border); padding-top: 15px;">
+                        <span style="color: var(--error); font-size: 0.8rem; cursor: pointer; opacity: 0.7;" 
+                              hx-delete="/remover_disciplina/{{ disc.id }}"
+                              hx-confirm="Isso não excluirá suas tarefas, apenas a matrícula. Continuar?"
+                              hx-target="closest .card-disciplina"
+                              hx-swap="outerHTML">
+                            Desvincular
+                        </span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: var(--text-muted);">
+                <p>Você ainda não está matriculado em nenhuma disciplina.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .card-disciplina:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary) !important;
+        box-shadow: var(--shadow);
+    }
+</style>

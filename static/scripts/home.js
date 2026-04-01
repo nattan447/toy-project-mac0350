@@ -20,6 +20,7 @@ function abrirModalEdicao(id,nome,disciplina) {
     const form = document.getElementById('modal-edit');
     form.setAttribute('hx-post', `/atualizar_task/${id}`);
     form.setAttribute('hx-target', `#task-${id}`);
+    form.setAttribute('hx-swap', 'outerHTML')
     htmx.process(form);
     
     

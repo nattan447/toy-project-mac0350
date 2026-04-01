@@ -198,7 +198,6 @@ async def atualizar_task(request:Request,task_id: int ,task_nome: str = Form(...
             request=request,
             name = "task.html", 
             context={
-                "request": request,
                 "task_nome": db_task.nome,
                 "disciplina_nome": disciplina_nome,
                 "task_id": db_task.id
@@ -206,3 +205,30 @@ async def atualizar_task(request:Request,task_id: int ,task_nome: str = Form(...
         )
     
 
+@app.get("/listar_disciplinas")
+async def list_tasks(request:Request,conta_id: str = Cookie(None)):
+    if not conta_id:
+           raise HTTPException(
+                status_code=401,detail="É necessário estar logado para essa requisição"
+            )
+    with Session(engine) as session:
+       query = (
+            select(Disciplina)
+            .join(Matricula, Disciplina.id == Matricula.disciplina_id)
+            .where(Matricula.aluno_id == int(conta_id))
+        )
+       disciplinas = session.exec(query).all()
+       return templates.TemplateResponse(request=request,name="disciplinas.html",context={"disciplinas": disciplinas})
+
+
+
+@app.get("/mostrar_perfil")
+async def mostrar_perfil(request:Request,conta_id: str = Cookie(None)):
+    if not conta_id:
+           raise HTTPException(
+                status_code=401,detail="É necessário estar logado para essa requisição"
+            )
+    with Session(engine) as session:
+       query = select(Aluno).where(Aluno.id == int(conta_id))
+       aluno = session.exec(query).first()
+       return templates.TemplateResponse(request=request,name="perfil.html",context={"aluno": aluno})

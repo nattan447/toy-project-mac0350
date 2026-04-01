@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>task manager</title>
+    <link rel="stylesheet" href="../static/home.css"> <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.js"></script>
+</head>
+<body>
+    <main>
+        <div id="side-left-bar">
+             <p hx-get="/mostrar_perfil" hx-target="body" hx-push-url="true">Perfil</p>
+            <p hx-get="/home" hx-target="body" hx-push-url="true">Home</p>
+            <p hx-get="/listar_disciplinas" hx-target="body" hx-push-url="true">Disciplinas</p>
+            <p><a href="/logout">Sair</a></p>
+        </div>
+        
+        <div id="central-div">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+</body>
+</html>

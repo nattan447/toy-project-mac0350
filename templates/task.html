@@ -1,24 +1,14 @@
 <div class="task" id="task-{{ task_id }}">
-    <p>{{ task_nome }}</p>
-    <p>{{ disciplina_nome }}</p>
-    <p onclick="abrirModalEdicao('{{ task_id }}', '{{ task_nome }}', '{{ disciplina_nome }}')">
-    editar
-    </p>
-    <p hx-delete="/deletar_task/{{ task_id }}" 
-    hx-target="closest .task"
-    hx-swap="outerHTML">excluir</p>
+    <p style="font-weight: 600;">{{ task_nome }}</p>
+    <p style="color: var(--text-muted);">{{ disciplina_nome }}</p>
+    
+    <div style="display: flex; gap: 15px;">
+        <span onclick="abrirModalEdicao('{{ task_id }}', '{{ task_nome }}', '{{ disciplina_nome }}')" 
+              style="cursor:pointer; color: var(--primary); font-size: 0.9rem;">Editar</span>
+        
+        <span hx-delete="/deletar_task/{{ task_id }}" 
+              hx-target="closest .task" 
+              hx-confirm="Excluir tarefa?"
+              style="cursor:pointer; color: #fb7185; font-size: 0.9rem;">Excluir</span>
+    </div>
 </div>
-
-<style>
-.task {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    background-color: aqua;
-    width: 95%;
-    margin: 10px auto;
-    padding: 15px;
-    border-radius: 8px;
-}
-</style>

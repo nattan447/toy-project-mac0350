@@ -14,8 +14,22 @@
 <body> 
 <main>
     <div id="side-left-bar">
-        <p>Pefil do usuário</p>
-        <p>Disciplinas</p>
+        <p 
+        hx-get="/mostrar_perfil"
+        hx-target="body" 
+        hx-push-url="true"
+        style="cursor:pointer"
+        >Pefil</p>
+        <p hx-get="/home"
+        hx-target="body" 
+        hx-push-url="true"
+        style="cursor:pointer"
+        >Home</p>
+        <p hx-get="/listar_disciplinas"
+                hx-target="#central-div"
+                hx-swap="innerHTML" 
+                hx-push-url="true"
+            style="cursor:pointer">Disciplinas</p>
         <p><a href="/logout">Sair</a></p>
     </div>
     <div id="central-div">
@@ -30,35 +44,37 @@
         </div>
         <div id="header-tasks">
             <p>tasks ativas</p>
-            <p>data de criação</p>
-            <p>disciplina</p>
+            <p 
+            >disciplina</p>
         </div>
 
 
-        <div id="overlay">
-            <form id="modal" hx-post="/add_tarefa" hx-target="#tasks" hx-on::after-request="this.reset()" hx-swap="beforeend" >
-                <div id="fechar-tool-modal"><p id="fechar-modal">fechar</p></div>
-                <h1>Adicione a sua tarefa</h1>
-                <input type="text" placeholder="nome da tarefa" class="input-task" required name="tarefa_nome">
-                <input type="text" placeholder="Disciplina da tarefa" class="input-task" required name="disciplina_nome">
-                <button id="btn-model" type="submit">Adicionar</button>
-            </form>
-        </div>
+    <div id="overlay" class="overlay">
+    <form id="modal" hx-post="/add_tarefa" hx-target="#tasks" hx-on::after-request="this.reset()" hx-swap="beforeend">
+        <div id="fechar-tool-modal"><p id="fechar-modal">fechar</p></div>
+        <h1>Adicione a sua tarefa</h1>
+        <input type="text" placeholder="nome da tarefa" class="input-task" required name="tarefa_nome">
+        <input type="text" placeholder="Disciplina da tarefa" class="input-task" required name="disciplina_nome">
+        <button id="btn-model" type="submit">Adicionar</button>
+    </form>
+    </div>
 
         <div id="tasks">
             {% if tasks_aluno_disciplinas %}
-                {% for task,disciplina in tasks_aluno_disciplinas %}
-                    <div class="task" id="task-{{task.id}}">
-                        <p>{{ task.nome }}</p>
-                        {# Nota: Se quiser o nome da disciplina, precisaremos de um join na query do Python #}
-                        <p>disciplina: {{ disciplina.nome }}</p>
-                        <p onclick="abrirModalEdicao('{{ task.id }}', '{{ task.nome }}',  '{{ disciplina.nome }}')" 
-                        style="cursor:pointer; color: blue;">
-                        editar
-                        </p>
-                        <p hx-delete="/deletar_task/{{ task.id }}" 
-                        hx-target="closest .task"
-                        hx-swap="outerHTML">excluir</p>
+                {% for task, disciplina in tasks_aluno_disciplinas %}
+                    <div class="task" id="task-{{ task.id }}">
+                        <p style="font-weight: 600;">{{ task.nome }}</p>
+                        <p style="color: var(--text-muted);">{{ disciplina.nome }}</p>
+                        
+                        <div style="display: flex; gap: 15px;">
+                            <span onclick="abrirModalEdicao('{{ task.id }}', '{{ task.nome }}', '{{ disciplina.nome }}')" 
+                                style="cursor:pointer; color: var(--primary); font-size: 0.9rem;">Editar</span>
+                            
+                            <span hx-delete="/deletar_task/{{ task.id }}" 
+                                hx-target="closest .task" 
+                                hx-swap="outerHTML"
+                                style="cursor:pointer; color: #fb7185; font-size: 0.9rem;">Excluir</span>
+                        </div>
                     </div>
                 {% endfor %}
             {% endif %}

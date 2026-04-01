@@ -20,7 +20,7 @@ class Aluno(SQLModel,table=True):
 
 class Disciplina(SQLModel,table = True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    nome: str
+    nome: str = Field(unique=True)
 
 class Matricula(SQLModel,table = True):
     aluno_id: Optional[int] = Field(
@@ -36,9 +36,7 @@ class Matricula(SQLModel,table = True):
 
 class Tarefa(SQLModel,table = True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    nome: str
-    data_finalizacao: date
-    
+    nome: str    
     disciplina_id: Optional[int] = Field(
         default=None,
         foreign_key="disciplina.id",

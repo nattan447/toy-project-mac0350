@@ -41,45 +41,40 @@
                 <h1>Adicione a sua tarefa</h1>
                 <input type="text" placeholder="nome da tarefa" class="input-task" required name="tarefa_nome">
                 <input type="text" placeholder="Disciplina da tarefa" class="input-task" required name="disciplina_nome">
-                <input type="date"  placeholder="Data final tarefa" class="input-task" required name="data_final_tarefa">
                 <button id="btn-model" type="submit">Adicionar</button>
             </form>
         </div>
 
         <div id="tasks">
-            {% if tasks_aluno %}
-                {% for task in tasks_aluno%}
-                    <div class="task">
+            {% if tasks_aluno_disciplinas %}
+                {% for task,disciplina in tasks_aluno_disciplinas %}
+                    <div class="task" id="task-{{task.id}}">
                         <p>{{ task.nome }}</p>
-                        <p>{{ task.data_finalizacao}}</p>
                         {# Nota: Se quiser o nome da disciplina, precisaremos de um join na query do Python #}
-                        <p>Disciplina ID: {{ task.disciplina_id }}</p>
-                        <p onclick="abrirModalEdicao('{{ task.id }}', '{{ task.nome }}', '{{ task.data_finalizacao }}', '{{ task.disciplina_id }}')" 
+                        <p>disciplina: {{ disciplina.nome }}</p>
+                        <p onclick="abrirModalEdicao('{{ task.id }}', '{{ task.nome }}',  '{{ disciplina.nome }}')" 
                         style="cursor:pointer; color: blue;">
                         editar
                         </p>
-                        <p>excluir</p>
+                        <p hx-delete="/deletar_task/{{ task.id }}" 
+                        hx-target="closest .task"
+                        hx-swap="outerHTML">excluir</p>
                     </div>
                 {% endfor %}
             {% endif %}
-
         </div>
 
         <div id="overlay-edit" class="overlay" style="display: none;">
-            <form id="modal-edit" action="/atualizar_tarefa" method="POST">
-                <input type="hidden" name="tarefa_id" id="edit-id">
-                
+            <form id="modal-edit" >
                 <div id="fechar-tool-modal">
                     <p onclick="fecharModalEdicao()" style="cursor:pointer">fechar</p>
                 </div>
                 
                 <h1>Editar Tarefa</h1>
-                
-                <input type="text" name="tarefa_nome" id="edit-nome" class="input-task" required>
+        
+                <input type="text" name="task_nome" id="edit-nome" class="input-task" required>
                 <input type="text" name="disciplina_nome" id="edit-disciplina" class="input-task" required>
-                <input type="date" name="data_final_tarefa" id="edit-data" class="input-task" required>
-                
-                <button id="btn-model" type="submit">Salvar Alterações</button>
+                <button id="btn-model">Salvar Alterações</button>
             </form>
         </div>
     </div>

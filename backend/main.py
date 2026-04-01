@@ -1,6 +1,5 @@
 from datetime import date
-
-from fastapi import FastAPI,Request,status, Form,Cookie
+from fastapi import FastAPI,Request,status, Form,Cookie,HTTPException, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 from database.database import Aluno,Aluno_tarefa,Tarefa,Disciplina ,Matricula , create_db_and_tables,engine
@@ -36,13 +35,18 @@ def criar_aluno(nome : str = Form(...),email: str = Form(...),senha: str = Form(
     
 @app.get("/home")
 def carrega_home(request: Request,conta_id: str = Cookie(None)):
-    conta =  Session(engine).get(Aluno, int(conta_id)) ## pega o id do cookie do cara que logou
-    if not conta:
-        return {"erro": "conta não encontrado"}
+    if not conta_id:
+        return {"erro": "conta não encontrada"}
     with Session(engine) as session:
-        query =  select(Tarefa).join(Aluno_tarefa).where(Aluno_tarefa.aluno_id == int(conta_id))
-        tasks_aluno = session.exec(query).all()
-        return templates.TemplateResponse(request=request,name="home.html",context={"tasks_aluno":tasks_aluno})
+        conta =  session.get(Aluno, int(conta_id)) ## pega o id do cookie do cara que logou
+        query = (
+            select(Tarefa, Disciplina)
+            .join(Disciplina, Tarefa.disciplina_id == Disciplina.id)
+            .join(Aluno_tarefa, Tarefa.id == Aluno_tarefa.tarefa_id)
+            .where(Aluno_tarefa.aluno_id == int(conta_id))
+        )
+        result = session.exec(query).all()
+        return templates.TemplateResponse(request=request,name="home.html",context={"tasks_aluno_disciplinas":result})
 
 
 @app.get("/login")
@@ -79,66 +83,126 @@ def logout(request: Request):
 def add_tarefa(
     request: Request,
     tarefa_nome: str = Form(...),
-    data_final_tarefa: str = Form(...),
     disciplina_nome: str = Form(...),
     conta_id: str = Cookie(None)
 ):
     if not conta_id:
         return RedirectResponse(url="/login", status_code=303)
-    
-    data_convertida = date.fromisoformat(data_final_tarefa)
 
     with Session(engine) as session:
-        nova_disciplina = Disciplina(nome=disciplina_nome)
-        session.add(nova_disciplina)
-        session.commit()
-        session.refresh(nova_disciplina) 
+        #  VERIFICAÇÃO: A disciplina já existe?
+        query = select(Disciplina).where(Disciplina.nome == disciplina_nome)
+        disciplina_existente = session.exec(query).first()
 
+        if disciplina_existente:
+            # Se existe, usamos a que já está no banco
+            disciplina_final = disciplina_existente
+        else:
+            # Se não existe, criamos uma nova
+            disciplina_final = Disciplina(nome=disciplina_nome)
+            session.add(disciplina_final)
+            session.commit()
+            session.refresh(disciplina_final)
+
+        #  CRIAR A TAREFA (usando o ID da disciplina_final)
         nova_tarefa = Tarefa(
             nome=tarefa_nome, 
-            data_finalizacao=data_convertida, 
-            disciplina_id=nova_disciplina.id
+            disciplina_id=disciplina_final.id
         )
         session.add(nova_tarefa)
-        session.commit() 
-        session.refresh(nova_tarefa) 
+        session.commit()
+        session.refresh(nova_tarefa)
 
+        #  CRIAR VÍNCULOS (Aluno-Tarefa e Matrícula)
         vinculo = Aluno_tarefa(
             aluno_id=int(conta_id), 
             tarefa_id=nova_tarefa.id
         )
         
-        nova_matricula = Matricula(
-            aluno_id=int(conta_id), 
-            disciplina_id=nova_disciplina.id
+        # Verificamos se o aluno já está matriculado nessa disciplina para não duplicar matrícula
+        check_matricula = select(Matricula).where(
+            Matricula.aluno_id == int(conta_id),
+            Matricula.disciplina_id == disciplina_final.id
         )
+        matricula_existe = session.exec(check_matricula).first()
+
+        if not matricula_existe:
+            nova_matricula = Matricula(
+                aluno_id=int(conta_id), 
+                disciplina_id=disciplina_final.id
+            )
+            session.add(nova_matricula)
 
         session.add(vinculo)
-        session.add(nova_matricula)
         session.commit()
-
         return templates.TemplateResponse(
             request=request,
             name="task.html",
             context={
-                "task_data_final": data_final_tarefa,
                 "task_nome": tarefa_nome,
+                "disciplina_nome": disciplina_final.nome,
+                "task_id": nova_tarefa.id,
+            }
+        )
+
+@app.delete("/deletar_task/{task_id}")
+async def deletar_task(request:Request,task_id: int,conta_id: str = Cookie(None)):
+
+    with Session(engine) as session:
+        aluno =  session.get(Aluno, int(conta_id)) ## pega o id do cookie do cara que logou
+        if not aluno:
+            raise HTTPException(
+                status_code=401,detail="É necessário estar logado para essa requisição"
+            )
+        query = select(Tarefa).where(Tarefa.id == task_id)
+        task = session.exec(query).first()
+        if not task:
+            raise HTTPException(
+                status_code=404,detail="Tarefa não encontrada"
+            )
+        query = select(Aluno_tarefa).where(Aluno_tarefa.aluno_id == aluno.id, Aluno_tarefa.tarefa_id ==task_id)
+        task_aluno = session.exec(query).first()
+        if not task_aluno:
+            raise HTTPException(
+                status_code=404,detail="Tarefa não tem ligação com aluno"
+            )
+        session.delete(task_aluno)
+        session.commit()
+        return ""  
+
+
+@app.post("/atualizar_task/{task_id}")
+async def atualizar_task(request:Request,task_id: int ,task_nome: str = Form(...),disciplina_nome: str = Form(...)):
+    with Session(engine) as session:
+        db_task = session.get(Tarefa, task_id)
+        if not db_task:
+            raise HTTPException(status_code=404, detail="Tarefa não encontrada")
+        
+        query = select(Disciplina).where(Disciplina.nome == disciplina_nome)
+        disciplina = session.exec(query).first()
+        if disciplina: ## se a disciplina já existe, só muda o id da discplina da nossa task
+            db_task.disciplina_id = disciplina.id
+        else: # se não existir cria a disciplina 
+            nova_disciplina  = Disciplina(nome=disciplina_nome)
+            session.add(nova_disciplina)
+            session.commit()
+            session.refresh(nova_disciplina)
+            db_task.disciplina_id = nova_disciplina.id
+
+        db_task.nome = task_nome
+        session.add(db_task)
+        session.commit()
+        session.refresh(db_task)
+
+        return templates.TemplateResponse( ## retorna a nova task atualizadad
+            request=request,
+            name = "task.html", 
+            context={
+                "request": request,
+                "task_nome": db_task.nome,
                 "disciplina_nome": disciplina_nome,
-                "id_task": nova_tarefa.id,
+                "task_id": db_task.id
             }
         )
     
-@app.get("/editar_tarefa_form/{tarefa_id}")
-def editar_tarefa_form(request: Request, tarefa_id: int):
-    with Session(engine) as session:
-        tarefa = session.get(Tarefa, tarefa_id)
-        disciplina = session.get(Disciplina, tarefa.disciplina_id)
-        
-        return templates.TemplateResponse(
-            "edit_form.html", 
-            {
-                "request": request, 
-                "tarefa": tarefa, 
-                "disciplina_nome": disciplina.nome
-            }
-        )
+

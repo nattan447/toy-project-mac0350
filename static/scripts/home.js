@@ -13,10 +13,17 @@ document.getElementById("fechar-modal").addEventListener("click", () => {
 
 
 
-function abrirModalEdicao(id, nome, data, disciplina) {
-    document.getElementById('edit-id').value = id;
+function abrirModalEdicao(id,nome,disciplina) {
+    // id da tarefa, nome da tarefa atual, disciplina da tarefa atual
+    
+    // carrega esses atributos no form
+    const form = document.getElementById('modal-edit');
+    form.setAttribute('hx-post', `/atualizar_task/${id}`);
+    form.setAttribute('hx-target', `#task-${id}`);
+    htmx.process(form);
+    
+    
     document.getElementById('edit-nome').value = nome;
-    document.getElementById('edit-data').value = data;
     document.getElementById('edit-disciplina').value = disciplina;   
     document.getElementById('overlay-edit').style.display = 'flex';
 }

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/sigup.css">
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.js" integrity="sha384-ezjq8118wdwdRMj+nX4bevEi+cDLTbhLAeFF688VK8tPDGeLUe0WoY2MZtSla72F" crossorigin="anonymous"></script>
+     <script src="../static/scripts/signup.js" defer></script>
+    <title>sign-up</title>
+</head>
+<body>
+
+    <main>
+        <div id="bem-vindo">
+
+            <h1>Bem vindo de volta</h1>
+            <h2>É bom ter você conosco!</h2>
+            <p>essa div vai ser clicavel</p>
+        </div>
+        
+        <div id="criar-conta">
+        <h1>Criar conta</h1>
+        
+        <form id="formulario-criacao-conta" action="/alunos" method="post">
+        <input type="text" name="nome" placeholder="Nome" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="senha" placeholder="senha" required>
+        <input type="text" placeholder="Digite o curso" name="curso" required>
+        <button id="btn-singup" type="submit">sign up</button>
+        </form>
+        </div>
+    </main>
+    
+</body>
+</html>

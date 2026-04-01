@@ -1,0 +1,20 @@
+<div class="task">
+    <p>{{ task_nome }}</p>
+    <p>{{ task_data_final}}</p>
+    <p>{{ disciplina_nome }}</p>
+    <p onclick="abrirModalEdicao('{{ task_id }}', '{{ task_nome }}', '{{ task_data_final }}', '{{ disciplina_nome }}')">
+    editar
+    </p>
+    <p>excluir</p>
+</div>
+
+<style>
+.task {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: aqua;
+    width: 70%;
+    margin-top: 10px;
+}
+</style>

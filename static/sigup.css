@@ -1,0 +1,193 @@
+:root {
+    --bg-body: #0f172a;
+    --bg-card: #1e293b;
+    --primary: #6366f1;
+    --primary-hover: #818cf8;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --input-bg: #334155;
+    --input-border: #475569;
+    --error: #fb7185;
+    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 900px;
+    min-height: 550px;
+    background-color: var(--bg-card);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Painel Esquerdo (Interativo) */
+#bem-vindo {
+    flex: 1;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: filter 0.3s ease;
+    cursor: pointer;
+}
+
+#bem-vindo:hover {
+    filter: brightness(1.1);
+}
+
+#bem-vindo h1 {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 10px;
+    background: none;
+    -webkit-text-fill-color: initial;
+}
+
+#bem-vindo h2 {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 400;
+}
+
+#bem-vindo p {
+    margin-top: 30px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+}
+
+/* Painel Direito (Formulário) */
+#criar-conta {
+    flex: 1.2;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#criar-conta h1 {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    text-align: center;
+    background: linear-gradient(to right, #818cf8, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#formulario-criacao-conta {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+input {
+    height: 48px;
+    width: 100%;
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    padding: 0 16px;
+    color: white;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+input::placeholder {
+    color: var(--text-muted);
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background-color: #3d4b5f;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+}
+
+#btn-singup {
+    height: 50px;
+    margin-top: 10px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#btn-singup:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+#btn-singup:active {
+    transform: translateY(0);
+}
+
+/* --- RESPONSIVIDADE --- */
+
+@media (max-width: 768px) {
+    body {
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    main {
+        flex-direction: column;
+        min-height: auto;
+        margin-top: 20px;
+    }
+
+    #bem-vindo {
+        padding: 50px 20px;
+        order: 2; /* Move o texto de boas-vindas para baixo se preferir */
+    }
+
+    #criar-conta {
+        padding: 40px 24px;
+        order: 1; /* Formulário aparece primeiro no celular */
+    }
+
+    #bem-vindo h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #criar-conta {
+        padding: 30px 16px;
+    }
+    h1 {
+        font-size: 1.4rem;
+    }
+}

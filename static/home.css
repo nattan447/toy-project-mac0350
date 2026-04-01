@@ -1,0 +1,173 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+main {
+    background-color: black;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+}
+
+#side-left-bar {
+    background-color: blue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 15%;
+    padding-top: 2%;
+    color: white;
+}
+
+#central-div {
+    background-color: pink;
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+}
+
+#header-central-div {
+    background-color: black;
+    display: flex;
+    height: 10%;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 5%;
+    gap: 5%;
+    color: white;
+}
+
+#header-tasks {
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    justify-content: space-around;
+    font-weight: bold;
+}
+
+.btn-home {
+    width: 120px;
+    height: 40px;
+    border: none;
+    background-color: rgb(0, 184, 120);
+    border-radius: 7px;
+    color: white;
+    cursor: pointer;
+}
+
+#pesquisa-bar {
+    height: 50%;
+    background-color: transparent;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 40%;
+    gap: 10px;
+}
+
+#pesquisa-input {
+    height: 100%;
+    width: 80%;
+    border-radius: 5px;
+    border: none;
+    background-color: rgb(229, 228, 228);
+    padding-left: 10px;
+}
+
+#lupa {
+    height: 80%;
+    cursor: pointer;
+}
+
+#overlay, #overlay-edit {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+#modal, #modal-edit {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 350px;
+    padding: 30px;
+    gap: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+}
+
+#modal h1, #modal-edit h1 {
+    background-color: transparent;
+    font-size: 24px;
+    color: #333;
+}
+
+.input-task {
+    height: 45px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    padding-left: 10px;
+}
+
+#btn-model {
+    width: 100%;
+    height: 45px;
+    border: none;
+    background-color: rgb(0, 184, 120);
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#fechar-tool-modal {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    background-color: transparent;
+}
+
+#fechar-tool-modal p {
+    background-color: transparent;
+    color: red;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#tasks { 
+    width: 100%;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.task {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background-color: aqua;
+    width: 95%;
+    margin: 10px auto;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+button:hover, #lupa:hover, #fechar-tool-modal p:hover {
+    opacity: 0.8;
+}
+#overlay.mostrar {
+    display: flex !important;
+}

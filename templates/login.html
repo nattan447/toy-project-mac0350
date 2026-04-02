@@ -2,26 +2,32 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../static/login.css">
-
-    <title>login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="../static/login.css">
+    <title>Login</title>
 </head>
 <body>
 
-    <main>
-        <p > <a href="/">Voltar</a></p>
-        <div id="login">
-        <h1>Entrar</h1>
-        <form id="form-login" action="/logar" method="post">
-        <input type="text" placeholder="Nome" required name="nome">
-        <input type="email" placeholder="Email" required name="email">
-        <input type="password" placeholder="senha" required name="senha">
-        <button id="btn-singup" type="submit">login</button>
-        {% if msg_error %}
-        <p>Dados incorretos</p>
-        {% endif %}
-        </form>
+    <main class="login-wrapper">
+        <div class="nav-back">
+            <a href="/">← Voltar</a>
+        </div>
+
+        <div id="login-card">
+            <h1>Entrar</h1>
+            <form id="form-login" action="/logar" method="post">
+                <input type="text" placeholder="Nome" required name="nome" autocomplete="username">
+                <input type="email" placeholder="Email" required name="email" autocomplete="email">
+                <input type="password" placeholder="Senha" required name="senha" autocomplete="current-password">
+                
+                <button id="btn-login" type="submit">Entrar</button>
+
+                {% if msg_error %}
+                <div class="error-container">
+                    <p>Dados incorretos</p>
+                </div>
+                {% endif %}
+            </form>
         </div>
     </main>
     

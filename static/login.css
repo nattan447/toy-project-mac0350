@@ -8,59 +8,55 @@
     --input-bg: #334155;
     --input-border: #475569;
     --error: #fb7185;
-    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 body {
     background-color: var(--bg-body);
     color: var(--text-main);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-main {
-    width: 100%;
-    max-width: 400px;
-    padding: 20px;
+    font-family: 'Inter', sans-serif;
+    
+    /* Força o preenchimento total da tela sem bugar o scroll */
+    min-height: 100dvh; 
     display: flex;
     flex-direction: column;
-    gap: 15px;
 }
 
-main > p a {
-    text-decoration: none;
+.login-wrapper {
+    width: 100%;
+    max-width: 400px;
+    /* O segredo: margin auto centraliza verticalmente se o pai for flex */
+    margin: auto; 
+    padding: 20px;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.nav-back {
+    margin-bottom: 10px;
+}
+
+.nav-back a {
     color: var(--text-muted);
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: color 0.2s;
+    text-decoration: none;
+    font-size: 0.9rem;
 }
 
-main > p a:hover {
-    color: var(--primary-hover);
-}
-
-#login {
+#login-card {
     background-color: var(--bg-card);
-    padding: 40px;
-    border-radius: 16px;
-    box-shadow: var(--shadow);
+    padding: clamp(20px, 8vw, 40px);
+    border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
 }
 
 h1 {
-    font-size: 1.75rem;
-    font-weight: 700;
-    margin-bottom: 25px;
     text-align: center;
+    margin-bottom: 30px;
     background: linear-gradient(to right, #818cf8, #c084fc);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -69,61 +65,47 @@ h1 {
 form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 15px;
 }
 
 input {
-    height: 48px;
-    background-color: var(--input-bg);
+    width: 100%;
+    height: 50px;
+    background: var(--input-bg);
     border: 1px solid var(--input-border);
-    border-radius: 10px;
-    padding: 0 16px;
+    border-radius: 12px;
+    padding: 0 15px;
     color: white;
-    font-size: 1rem;
-    transition: all 0.2s ease;
-}
-
-input::placeholder {
-    color: var(--text-muted);
+    font-size: 16px; /* Evita zoom no iPhone */
+    outline: none;
 }
 
 input:focus {
-    outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
-    background-color: #3d4b5f;
 }
 
-#btn-singup {
-    height: 48px;
-    margin-top: 8px;
-    background-color: var(--primary);
+#btn-login {
+    height: 50px;
+    background: var(--primary);
     color: white;
     border: none;
-    border-radius: 10px;
-    font-size: 1rem;
+    border-radius: 12px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    margin-top: 10px;
 }
 
-#btn-singup:hover {
-    background-color: var(--primary-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
-}
-
-#btn-singup:active {
-    transform: translateY(0);
-}
-
-form p {
-    color: var(--error);
-    font-size: 0.875rem;
-    text-align: center;
-    margin-top: 5px;
-    font-weight: 500;
+.error-container {
     background: rgba(251, 113, 133, 0.1);
-    padding: 8px;
-    border-radius: 6px;
+    border: 1px solid var(--error);
+    padding: 10px;
+    border-radius: 8px;
+    color: var(--error);
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }

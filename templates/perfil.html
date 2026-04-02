@@ -1,75 +1,198 @@
 {% extends "base.html" %}
 {% block content %}
-<div id="perfil-container" style="animation: fadeIn 0.4s ease; color: var(--text-main); max-width: 800px; margin: 0 auto; padding: 20px;">
+<div id="perfil-container" class="perfil-animacao">
     
-    <div style="text-align: center; margin-bottom: 40px;">
-        <h1 style="background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2rem; margin-bottom: 10px;">
-            Meu Perfil
-        </h1>
-        <p style="color: var(--text-muted);">Gerencie suas informações de estudante</p>
+    <div class="perfil-header">
+        <h1>Meu Perfil</h1>
+        <p>Gerencie suas informações de estudante</p>
     </div>
 
-    <div style="background: var(--bg-card); border-radius: 24px; border: 1px solid var(--input-border); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column;">
-        
-        <div style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%); padding: 40px; display: flex; flex-direction: column; align-items: center; border-bottom: 1px solid var(--input-border);">
-            
-            <div style="width: 120px; height: 120px; background: var(--input-bg); border-radius: 50%; border: 4px solid var(--primary); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; overflow: hidden; position: relative;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" style="width: 60px;">
+    <div class="perfil-card">
+        <div class="perfil-banner">
+            <div class="avatar-circle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
                 </svg>
-                </div>
-
-            <h2 style="font-size: 1.5rem; margin: 0;">{{ aluno.nome }}</h2>
-            <span style="background: var(--primary); color: white; font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold;">
-                Estudante Ativo
-            </span>
+            </div>
+            <h2>{{ aluno.nome }}</h2>
+            <span class="badge-estudante">Estudante Ativo</span>
         </div>
 
-        <div style="padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-            
+        <div class="perfil-info-grid">
             <div class="info-group">
-                <label style="display: block; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px; text-transform: uppercase;">E-mail Cadastrado</label>
-                <div style="background: var(--input-bg); padding: 12px 16px; border-radius: 12px; border: 1px solid var(--input-border);">
-                    {{ aluno.email }}
-                </div>
+                <label>E-mail Cadastrado</label>
+                <div class="info-box">{{ aluno.email }}</div>
             </div>
 
             <div class="info-group">
-                <label style="display: block; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px; text-transform: uppercase;">Curso / Graduação</label>
-                <div style="background: var(--input-bg); padding: 12px 16px; border-radius: 12px; border: 1px solid var(--input-border);">
-                    {{ aluno.curso }}
-                </div>
+                <label>Curso / Graduação</label>
+                <div class="info-box">{{ aluno.curso }}</div>
             </div>
 
-            <div class="info-group" style="grid-column: span 2;">
-                <label style="display: block; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px; text-transform: uppercase;">ID do Usuário</label>
-                <div style="background: var(--input-bg); padding: 12px 16px; border-radius: 12px; border: 1px solid var(--input-border); font-family: monospace; color: var(--primary);">
-                    #{{ aluno.id }}
-                </div>
+            <div class="info-group id-box">
+                <label>ID do Usuário</label>
+                <div class="info-box id-text">#{{ aluno.id }}</div>
             </div>
         </div>
 
-        <div style="padding: 20px 40px; background: rgba(0,0,0,0.2); display: flex; justify-content: flex-end; gap: 15px;">
-            <button class="btn-home" style="background: var(--input-bg); border: 1px solid var(--input-border);" hx-get="/home" hx-target="body" hx-push-url="true">
+        <div class="perfil-footer">
+            <button class="btn-perfil btn-voltar" hx-get="/home" hx-target="body" hx-push-url="true">
                 Voltar
             </button>
-            <button class="btn-home" onclick="alert('Funcionalidade de edição em breve!')">
+            <button class="btn-perfil btn-editar" onclick="alert('Funcionalidade de edição em breve!')">
                 Editar Perfil
             </button>
         </div>
     </div>
 </div>
-{% endblock %}
+
 <style>
+    /* Container Principal */
+    #perfil-container {
+        color: var(--text-main);
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .perfil-animacao {
+        animation: fadeIn 0.4s ease;
+    }
+
+    .perfil-header {
+        text-align: center; 
+        margin-bottom: 30px;
+    }
+
+    .perfil-header h1 {
+        background: linear-gradient(to right, #818cf8, #c084fc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: clamp(1.5rem, 5vw, 2rem); /* Fonte diminui em telas menores */
+        margin-bottom: 10px;
+    }
+
+    /* Card */
+    .perfil-card {
+        background: var(--bg-card);
+        border-radius: 24px;
+        border: 1px solid var(--input-border);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Banner Superior */
+    .perfil-banner {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-bottom: 1px solid var(--input-border);
+    }
+
+    .avatar-circle {
+        width: 100px;
+        height: 100px;
+        background: var(--input-bg);
+        border-radius: 50%;
+        border: 4px solid var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+    .avatar-circle svg { width: 50px; }
+
+    .badge-estudante {
+        background: var(--primary);
+        color: white;
+        font-size: 0.7rem;
+        padding: 4px 12px;
+        border-radius: 20px;
+        margin-top: 10px;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    /* Grid de Info - O segredo da responsividade */
+    .perfil-info-grid {
+        padding: 30px;
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 2 colunas no Desktop */
+        gap: 20px;
+    }
+
+    .info-group label {
+        display: block;
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+    }
+
+    .info-box {
+        background: var(--input-bg);
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: 1px solid var(--input-border);
+        word-break: break-all; /* Impede e-mail longo de quebrar o card */
+        transition: border-color 0.3s;
+    }
+
+    .info-box:hover { border-color: var(--primary); }
+
+    .id-box { grid-column: span 2; }
+    .id-text { font-family: monospace; color: var(--primary); }
+
+    /* Footer */
+    .perfil-footer {
+        padding: 20px 30px;
+        background: rgba(0,0,0,0.2);
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .btn-perfil {
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        transition: 0.2s;
+    }
+
+    .btn-voltar { background: var(--input-bg); color: white; border: 1px solid var(--input-border); }
+    .btn-editar { background: var(--primary); color: white; }
+
+    /* --- MEDIA QUERY PARA CELULAR (iPhone SE e outros) --- */
+    @media (max-width: 600px) {
+        #perfil-container { padding: 10px; }
+        
+        .perfil-info-grid {
+            grid-template-columns: 1fr; /* Vira 1 coluna no celular */
+            padding: 20px;
+        }
+
+        .id-box { grid-column: span 1; }
+
+        .perfil-footer {
+            flex-direction: column; /* Botões empilhados no mobile */
+        }
+
+        .btn-perfil { width: 100%; }
+
+        .perfil-banner { padding: 20px; }
+    }
+
     @keyframes fadeIn {
         from { opacity: 0; transform: scale(0.95); }
         to { opacity: 1; transform: scale(1); }
     }
-    .info-group div {
-        transition: border-color 0.3s;
-    }
-    .info-group div:hover {
-        border-color: var(--primary) !important;
-    }
 </style>
+{% endblock %}

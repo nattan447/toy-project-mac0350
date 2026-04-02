@@ -1,7 +1,7 @@
 from datetime import date
 from fastapi import FastAPI,Request,status, Form,Cookie,HTTPException, Response
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, HTMLResponse
 from database.database import Aluno,Aluno_tarefa,Tarefa,Disciplina ,Matricula , create_db_and_tables,engine
 from sqlmodel import SQLModel, Field, Session, create_engine,select
 from fastapi.templating import Jinja2Templates
@@ -235,7 +235,6 @@ async def mostrar_perfil(request:Request,conta_id: str = Cookie(None)):
 
 
 @app.delete("/remover_disciplina/{disciplina_id}")
-
 async def deletar_disciplia(request: Request,disciplina_id : int ,conta_id : str = Cookie(None)):
     if not conta_id:
         raise HTTPException(
@@ -247,7 +246,7 @@ async def deletar_disciplia(request: Request,disciplina_id : int ,conta_id : str
             Matricula.aluno_id == int(conta_id),
             Matricula.disciplina_id == disciplina_id
         )
-        matricula = session.exec(query).first()
+        matricula = session.exec(query).first() ## aqui eu não deleto a disciplina e sim a matricula
 
         if not matricula:
                  raise HTTPException(
@@ -256,6 +255,42 @@ async def deletar_disciplia(request: Request,disciplina_id : int ,conta_id : str
 
         session.delete(matricula)
         session.commit()
+        return Response(status_code=202)
         ## deleteou        
-        return Response(status_code=200)
+        
+
+@app.post("/add_disciplina")
+async def add_disciplina( request: Request, disciplina_nome: str = Form(...),conta_id: str = Cookie(None)):
+    if not conta_id:
+        raise HTTPException(status_code=404,detail="É necessário estar logado para essa requisição")
+            
+    with Session(engine) as session:
+        query = select(Disciplina).where(Disciplina.nome == disciplina_nome) # verificação: A disciplina já existe?
+        disciplina = session.exec(query).first()
+  
+        if disciplina:
+            check_matricula = select(Matricula).where(Matricula.aluno_id == int(conta_id),Matricula.disciplina_id == disciplina.id)
+            matricula_existe = session.exec(check_matricula).first()
+            if matricula_existe:
+                error_msg =  """ <div id="mensagem-erro" hx-swap-oob="true" style="color: #fb7185; margin-bottom: 10px;">
+                        Você já está matriculado nesta disciplina!
+                    </div>
+                     """
+                return Response(content=error_msg,status_code=200)
+            
+        else:
+            disciplina  = Disciplina(nome=disciplina_nome) ## nova discplina
+            session.add(disciplina)
+            session.commit()
+            session.refresh(disciplina)
+
+        n_matricula = Matricula(
+            aluno_id=int(conta_id), 
+            disciplina_id=disciplina.id
+            )
+        session.add(n_matricula)
+        session.commit()
+        disciplina_html = templates.get_template("disciplina.html").render({"disc": disciplina}) ## Renderiza o HTML da disciplina como string
+        limpa_erro_html = '<div id="mensagem-erro" hx-swap-oob="true"></div>' # serve para limpar a mensagem de erro
+        return HTMLResponse(content=disciplina_html + limpa_erro_html) ## Retorna os dois juntos
 

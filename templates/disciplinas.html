@@ -49,10 +49,11 @@
         {% endif %}
     </div>
         <div id="overlay" class="overlay">
-        <form id="modal" hx-post="/add_disciplina" hx-target="#tasks" hx-on::after-request="this.reset()" hx-swap="beforeend">
+        <form id="modal" hx-post="/add_disciplina" hx-target="#disciplinas" hx-on::after-request="this.reset()" hx-swap="beforeend">
             <div id="fechar-tool-modal" onclick="changeModal('overlay',false)"><p id="fechar-modal">fechar</p></div>
             <h1>Adicione uma nova disciplina</h1>
-            <input type="text" placeholder="Nome da disciplina" class="input-task" required name="disciplina_nome">            
+            <input type="text" placeholder="Nome da disciplina" class="input-task" required name="disciplina_nome">
+            <div id="mensagem-erro"></div>            
             <button id="btn-model" type="submit">Adicionar</button>
         </form>
     </div>
@@ -63,8 +64,10 @@
 function changeModal(id,open){
   //  altera o modo do modal (mostrar ou fechar), open: caso true, abre o modal, false, fecha
   const modal = document.getElementById(id)
+  const msg_error = document.getElementById("mensagem-erro")
   if (modal)
   {open? modal.classList.add("mostrar") : modal.classList.remove("mostrar")}
+  msg_error.innerHTML= "" // limpa a msg de erro
 }   
 </script>
 {% endblock %}

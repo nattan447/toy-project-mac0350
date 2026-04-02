@@ -1,0 +1,26 @@
+<div class="card-disciplina" 
+    style="background: var(--bg-card); 
+            padding: 25px; 
+            border-radius: 15px; 
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            transition: all 0.3s ease;
+            cursor: default;">
+    <div style="width: 40px; height: 40px; background: var(--input-bg); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+        <span style="color: var(--primary); font-weight: bold;">{{ disc.nome[0] | upper }}</span>
+    </div>
+
+    <h3 style="color: var(--text-main); margin-bottom: 8px; font-size: 1.1rem;">{{ disc.nome }}</h3>               
+    <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">
+                        ID da Disciplina: #{{ disc.id }}
+    </p>
+
+    <div style="display: flex; justify-content: flex-end; border-top: 1px solid var(--input-border); padding-top: 15px;">
+                        <span style="color: var(--error); font-size: 0.8rem; cursor: pointer; opacity: 0.7;" 
+                              hx-delete="/remover_disciplina/{{ disc.id }}"
+                              hx-confirm="Isso não excluirá suas tarefas, apenas a matrícula. Continuar?"
+                              hx-target="closest .card-disciplina"
+                              hx-swap="outerHTML">
+                            Desvincular
+                        </span>
+    </div>
+</div>

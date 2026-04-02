@@ -7,8 +7,8 @@
               style="cursor:pointer; color: var(--primary); font-size: 0.9rem;">Editar</span>
         
         <span hx-delete="/deletar_task/{{ task_id }}" 
-              hx-target="closest .task" 
-              hx-confirm="Excluir tarefa?"
+              hx-target="closest .task"
+              hx-swap="outerHTML" 
               style="cursor:pointer; color: #fb7185; font-size: 0.9rem;">Excluir</span>
     </div>
 </div>

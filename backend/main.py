@@ -168,7 +168,7 @@ async def deletar_task(request:Request,task_id: int,conta_id: str = Cookie(None)
             )
         session.delete(task_aluno)
         session.commit()
-        return ""  
+        return Response(status_code=200)  
 
 
 @app.post("/atualizar_task/{task_id}")
@@ -206,7 +206,7 @@ async def atualizar_task(request:Request,task_id: int ,task_nome: str = Form(...
     
 
 @app.get("/listar_disciplinas")
-async def list_tasks(request:Request,conta_id: str = Cookie(None)):
+async def list_disciplinas(request:Request,conta_id: str = Cookie(None)):
     if not conta_id:
            raise HTTPException(
                 status_code=401,detail="É necessário estar logado para essa requisição"
@@ -232,3 +232,30 @@ async def mostrar_perfil(request:Request,conta_id: str = Cookie(None)):
        query = select(Aluno).where(Aluno.id == int(conta_id))
        aluno = session.exec(query).first()
        return templates.TemplateResponse(request=request,name="perfil.html",context={"aluno": aluno})
+
+
+@app.delete("/remover_disciplina/{disciplina_id}")
+
+async def deletar_disciplia(request: Request,disciplina_id : int ,conta_id : str = Cookie(None)):
+    if not conta_id:
+        raise HTTPException(
+                status_code=401,detail="É necessário estar logado para essa requisição"
+            )
+    with Session(engine) as session:
+        
+        query = select(Matricula).where(
+            Matricula.aluno_id == int(conta_id),
+            Matricula.disciplina_id == disciplina_id
+        )
+        matricula = session.exec(query).first()
+
+        if not matricula:
+                 raise HTTPException(
+                status_code=401,detail="Matricula não encontrada"
+            )
+
+        session.delete(matricula)
+        session.commit()
+        ## deleteou        
+        return Response(status_code=200)
+

@@ -1,62 +1,24 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>home</title>
-    <link rel="stylesheet" href="../static/home.css">
-    <script src="../static/scripts/home.js" defer></script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.js" integrity="sha384-ezjq8118wdwdRMj+nX4bevEi+cDLTbhLAeFF688VK8tPDGeLUe0WoY2MZtSla72F" crossorigin="anonymous"></script>
 
-
-</head>
-<body> 
-<main>
-    <div id="side-left-bar">
-        <p 
-        hx-get="/mostrar_perfil"
-        hx-target="body" 
-        hx-push-url="true"
-        style="cursor:pointer"
-        >Pefil</p>
-        <p hx-get="/home"
-        hx-target="body" 
-        hx-push-url="true"
-        style="cursor:pointer"
-        >Home</p>
-        <p hx-get="/listar_disciplinas"
-                hx-target="#central-div"
-                hx-swap="innerHTML" 
-                hx-push-url="true"
-            style="cursor:pointer">Disciplinas</p>
-        <p><a href="/logout">Sair</a></p>
+{% extends "base.html" %}
+{% block content %}
+    <div id="header-central-div">
+        <p>Ferramentas</p>
+            <button class="btn-home" id="btn-add-task" onclick="changeModal('overlay',true)">+ Add nova</button>
     </div>
-    <div id="central-div">
-
-        <div id="header-central-div">
-            <p>Ferramentas</p>
-            <button class="btn-home" id="btn-add-task">+ Add nova</button>
-            <div id="pesquisa-bar">
-            <input type="text" placeholder="pesquisar task" id="pesquisa-input"/>
-            <img src="../static/images/lupa.png" alt="lupa de pesquisa" id="lupa"> 
-            </div>
-        </div>
-        <div id="header-tasks">
+    <div id="header-tasks">
             <p>tasks ativas</p>
             <p 
             >disciplina</p>
-        </div>
-
+    </div>
 
     <div id="overlay" class="overlay">
-    <form id="modal" hx-post="/add_tarefa" hx-target="#tasks" hx-on::after-request="this.reset()" hx-swap="beforeend">
-        <div id="fechar-tool-modal"><p id="fechar-modal">fechar</p></div>
-        <h1>Adicione a sua tarefa</h1>
-        <input type="text" placeholder="nome da tarefa" class="input-task" required name="tarefa_nome">
-        <input type="text" placeholder="Disciplina da tarefa" class="input-task" required name="disciplina_nome">
-        <button id="btn-model" type="submit">Adicionar</button>
-    </form>
+        <form id="modal" hx-post="/add_tarefa" hx-target="#tasks" hx-on::after-request="this.reset()" hx-swap="beforeend">
+            <div id="fechar-tool-modal" onclick="changeModal('overlay',false)"><p id="fechar-modal">fechar</p></div>
+            <h1>Adicione a sua tarefa</h1>
+            <input type="text" placeholder="nome da tarefa" class="input-task" required name="tarefa_nome">
+            <input type="text" placeholder="Disciplina da tarefa" class="input-task" required name="disciplina_nome">
+            <button id="btn-model" type="submit">Adicionar</button>
+        </form>
     </div>
 
         <div id="tasks">
@@ -92,10 +54,41 @@
                 <input type="text" name="disciplina_nome" id="edit-disciplina" class="input-task" required>
                 <button id="btn-model">Salvar Alterações</button>
             </form>
-        </div>
-    </div>
-</main>
+        </div>   
 
+<script>
+
+
+function changeModal(id,open){
+  //  altera o modo do modal (mostrar ou fechar), open: caso true, abre o modal, false, fecha
+  const modal = document.getElementById(id)
+  if (modal)
+  {open? modal.classList.add("mostrar") : modal.classList.remove("mostrar")}
+}
+
+
+
+
+function abrirModalEdicao(id,nome,disciplina) {
+    // id da tarefa, nome da tarefa atual, disciplina da tarefa atual
+        // carrega esses atributos no form
+    const form = document.getElementById('modal-edit');
+    form.setAttribute('hx-post', `/atualizar_task/${id}`);
+    form.setAttribute('hx-target', `#task-${id}`);
+    form.setAttribute('hx-swap', 'outerHTML')
+    htmx.process(form);
     
-</body>
-</html>
+    
+    document.getElementById('edit-nome').value = nome;
+    document.getElementById('edit-disciplina').value = disciplina;   
+    document.getElementById('overlay-edit').style.display = 'flex';
+}
+
+function fecharModalEdicao() {
+    document.getElementById('overlay-edit').style.display = 'none';
+}
+
+</script>
+{% endblock %}
+
+

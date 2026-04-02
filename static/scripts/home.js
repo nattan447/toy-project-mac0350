@@ -1,16 +1,9 @@
-const overlay = document.getElementById("overlay");
-const btn_add_task = document.getElementById("btn-add-task")
-
-// modal de add elemento
-btn_add_task.addEventListener("click", () => {
-  overlay.classList.add("mostrar");
-});
-
-document.getElementById("fechar-modal").addEventListener("click", () => {
-  overlay.classList.remove("mostrar");
-});
-
-
+function changeModal(id,open){
+  //  altera o modo do modal (mostrar ou fechar), open: caso true, abre o modal, false, fecha
+  const modal = document.getElementById(id)
+  if (modal)
+  {open? modal.classList.add("mostrar") : modal.classList.remove("mostrar")}
+}
 
 
 function abrirModalEdicao(id,nome,disciplina) {

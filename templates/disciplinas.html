@@ -1,14 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
 <div id="container-disciplinas" style="animation: fadeIn 0.3s ease;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
         <h1 style="background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.8rem;">
             Minhas Disciplinas
         </h1>
-        <button class="btn-home" onclick="document.getElementById('overlay').classList.add('mostrar')">
+        <button class="btn-home" onclick="changeModal('overlay',true)">
             + Nova Disciplina
         </button>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;" id="disciplinas">
         {% if disciplinas %}
             {% for disc in disciplinas %}
                 <div class="card-disciplina" 
@@ -46,7 +48,26 @@
             </div>
         {% endif %}
     </div>
+        <div id="overlay" class="overlay">
+        <form id="modal" hx-post="/add_disciplina" hx-target="#tasks" hx-on::after-request="this.reset()" hx-swap="beforeend">
+            <div id="fechar-tool-modal" onclick="changeModal('overlay',false)"><p id="fechar-modal">fechar</p></div>
+            <h1>Adicione uma nova disciplina</h1>
+            <input type="text" placeholder="Nome da disciplina" class="input-task" required name="disciplina_nome">            
+            <button id="btn-model" type="submit">Adicionar</button>
+        </form>
+    </div>
+
 </div>
+
+<script>
+function changeModal(id,open){
+  //  altera o modo do modal (mostrar ou fechar), open: caso true, abre o modal, false, fecha
+  const modal = document.getElementById(id)
+  if (modal)
+  {open? modal.classList.add("mostrar") : modal.classList.remove("mostrar")}
+}   
+</script>
+{% endblock %}
 
 <style>
     @keyframes fadeIn {

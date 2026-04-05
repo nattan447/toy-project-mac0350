@@ -3,6 +3,10 @@
 Uma aplicação web  de uma lista de Tarefas integrada ao gerenciamento de disciplinas acadêmicas. O projeto permite que estudantes organizem suas demandas escolares de forma centralizada
 ---
 
+## transparência
+
+* foi utilizado ferramentas de IA para auxiliar na geração de estilos e desings à preferência do desenvolvedor
+
 ##  Tecnologias Utilizadas
 
 * **Backend:** [FastAPI](https://fastapi.tiangolo.com/) (Python)

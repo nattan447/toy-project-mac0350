@@ -41,7 +41,7 @@ main {
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Painel Esquerdo (Interativo) */
+/* Painel Esquerdo */
 #bem-vindo {
     flex: 1;
     background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
@@ -82,7 +82,7 @@ main {
     font-weight: 600;
 }
 
-/* Painel Direito (Formulário) */
+/* Painel Direito  */
 #criar-conta {
     flex: 1.2;
     padding: 50px;
@@ -154,7 +154,7 @@ input:focus {
     transform: translateY(0);
 }
 
-/* --- RESPONSIVIDADE --- */
+/*  RESPONSIVIDADE  */
 
 @media (max-width: 768px) {
     body {
@@ -170,12 +170,12 @@ input:focus {
 
     #bem-vindo {
         padding: 50px 20px;
-        order: 2; /* Move o texto de boas-vindas para baixo se preferir */
+        order: 2; 
     }
 
     #criar-conta {
         padding: 40px 24px;
-        order: 1; /* Formulário aparece primeiro no celular */
+        order: 1;
     }
 
     #bem-vindo h1 {

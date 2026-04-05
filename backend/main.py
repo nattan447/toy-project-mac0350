@@ -104,7 +104,7 @@ def add_tarefa(
             session.commit()
             session.refresh(disciplina_final)
 
-        #  CRIAR A TAREFA (usando o ID da disciplina_final)
+        #  ccria a tarefa (usando o ID da disciplina_final)
         nova_tarefa = Tarefa(
             nome=tarefa_nome, 
             disciplina_id=disciplina_final.id

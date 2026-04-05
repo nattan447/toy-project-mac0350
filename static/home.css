@@ -18,7 +18,7 @@
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-/* --- Layout Base --- */
+
 body {
     background-color: var(--bg-body);
     color: var(--text-main);
@@ -30,14 +30,14 @@ body {
 main {
     display: flex;
     flex: 1;
-    height: 100vh; /* No Desktop, ocupa a tela cheia */
+    height: 100vh;
     width: 100%;
 }
 
-/* --- Sidebar (Desktop) --- */
+
 #side-left-bar {
     background-color: var(--bg-card);
-    width: 250px; /* Largura fixa para estabilidade */
+    width: 250px; 
     border-right: 1px solid var(--input-border);
     display: flex;
     flex-direction: column;
@@ -60,13 +60,13 @@ main {
     color: var(--text-main);
 }
 
-/* --- Área Central --- */
+
 #central-div {
     flex: 1;
     display: flex;
     flex-direction: column;
     padding: 30px;
-    overflow-y: auto; /* Scroll apenas na área de conteúdo */
+    overflow-y: auto; 
 }
 
 #header-central-div {
@@ -77,10 +77,10 @@ main {
     gap: 20px;
 }
 
-/* --- Lista de Tasks (Grid) --- */
+
 #header-tasks {
     display: grid;
-    grid-template-columns: 2fr 1.5fr 120px; /* Nome, Disciplina, Ações */
+    grid-template-columns: 2fr 1.5fr 120px;
     padding: 10px 25px;
     color: var(--text-muted);
     font-size: 0.75rem;
@@ -96,7 +96,7 @@ main {
 
 .task {
     display: grid;
-    grid-template-columns: 2fr 1.5fr 120px; /* Mesma estrutura do header */
+    grid-template-columns: 2fr 1.5fr 120px; 
     align-items: center;
     background-color: var(--bg-card);
     padding: 18px 25px;
@@ -110,7 +110,6 @@ main {
     border-color: var(--primary);
 }
 
-/* --- Formulários e Inputs --- */
 .input-task {
     width: 100%;
     background: var(--input-bg);
@@ -141,7 +140,7 @@ main {
     background-color: var(--primary-hover);
 }
 
-/* --- Modais --- */
+/*  Modais  */
 .overlay {
     position: fixed;
     inset: 0;
@@ -168,9 +167,7 @@ main {
     box-shadow: var(--shadow);
 }
 
-/* --- RESPONSIVIDADE (Mobile) --- */
-
-/* --- RESPONSIVIDADE APERFEIÇOADA (Foco em Telas Pequenas como iPhone SE) --- */
+/*  RESPONSIVIDADE   */
 
 @media (max-width: 768px) {
     main {
@@ -179,7 +176,7 @@ main {
         overflow-x: hidden; /* Evita scroll lateral indesejado */
     }
 
-    /* Sidebar: Ajustada para não transbordar */
+
     #side-left-bar {
         width: 100%;
         height: auto;
@@ -198,8 +195,8 @@ main {
     #side-left-bar p, #side-left-bar a {
         padding: 6px 10px;
         font-size: 0.8rem; /* Diminuímos a fonte para caber mais itens */
-        white-space: nowrap; /* Evita que o texto quebre dentro do botão */
-        background-color: var(--input-bg); /* Dá aspecto de botão individual */
+        white-space: nowrap; 
+        background-color: var(--input-bg); 
     }
 
     #central-div {
@@ -218,12 +215,12 @@ main {
         font-size: 1.2rem;
     }
 
-    /* Esconde o cabeçalho da tabela */
+  
     #header-tasks {
         display: none;
     }
 
-    /* --- Transformação da Task em CARD ESPAÇADO --- */
+
     #tasks {
         gap: 15px; /* Aumentamos o espaço entre um card e outro */
     }
@@ -237,14 +234,14 @@ main {
         gap: 5px; /* Espaço entre Nome e Disciplina */
     }
 
-    /* Nome da Tarefa */
+   
     .task p:nth-child(1) {
         font-size: 1rem;
         width: 100%;
-        word-wrap: break-word; /* Se o nome for gigante, ele quebra a linha */
+        word-wrap: break-word;
     }
 
-    /* Nome da Disciplina */
+   
     .task p:nth-child(2) {
         color: var(--primary);
         font-size: 0.85rem;
@@ -252,7 +249,7 @@ main {
         opacity: 0.9;
     }
 
-    /* Container de Ações (Editar / Excluir) */
+    
     .task div {
         display: flex;
         width: 100%;
@@ -264,6 +261,6 @@ main {
 
     .task div span {
         font-size: 0.85rem;
-        padding: 5px 0; /* Aumenta a área de toque para o dedo */
+        padding: 5px 0; 
     }
 }

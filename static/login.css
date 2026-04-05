@@ -21,7 +21,6 @@ body {
     color: var(--text-main);
     font-family: 'Inter', sans-serif;
     
-    /* Força o preenchimento total da tela sem bugar o scroll */
     min-height: 100dvh; 
     display: flex;
     flex-direction: column;
@@ -30,7 +29,6 @@ body {
 .login-wrapper {
     width: 100%;
     max-width: 400px;
-    /* O segredo: margin auto centraliza verticalmente se o pai for flex */
     margin: auto; 
     padding: 20px;
     animation: fadeIn 0.4s ease-out;
@@ -76,7 +74,7 @@ input {
     border-radius: 12px;
     padding: 0 15px;
     color: white;
-    font-size: 16px; /* Evita zoom no iPhone */
+    font-size: 16px; 
     outline: none;
 }
 

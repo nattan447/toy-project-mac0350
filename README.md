@@ -11,7 +11,7 @@ Uma aplicação web  de uma lista de Tarefas integrada ao gerenciamento de disci
 
 * **Backend:** [FastAPI](https://fastapi.tiangolo.com/) (Python)
 * **Frontend:** HTML5, CSS3  e [HTMX](https://htmx.org/)
-* **Banco de Dados:** SQLite (via SQLModel/SQLAlchemy)
+* **Banco de Dados:** SQL (via SQLModel)
 * **Template Engine:** Jinja2
 ---
 

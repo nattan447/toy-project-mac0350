@@ -21,27 +21,22 @@
         </form>
     </div>
 
-        <div id="tasks">
-            {% if tasks_aluno_disciplinas %}
-                {% for task, disciplina in tasks_aluno_disciplinas %}
-                    <div class="task" id="task-{{ task.id }}">
-                        <p style="font-weight: 600;">{{ task.nome }}</p>
-                        <p style="color: var(--text-muted);">{{ disciplina.nome }}</p>
-                        
-                        <div style="display: flex; gap: 15px;">
-                            <span onclick="abrirModalEdicao('{{ task.id }}', '{{ task.nome }}', '{{ disciplina.nome }}')" 
-                                style="cursor:pointer; color: var(--primary); font-size: 0.9rem;">Editar</span>
-                            
-                            <span hx-delete="/deletar_task/{{ task.id }}" 
-                                hx-target="closest .task" 
-                                hx-swap="outerHTML"
-                                style="cursor:pointer; color: #fb7185; font-size: 0.9rem;">Excluir</span>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        </div>
+<div style="margin: 20px 0;">
+    <input type="search" 
+           name="search" 
+           placeholder="Pesquisar tarefas ou disciplinas..." 
+           class="input-task"
+           hx-get="/home" 
+           hx-trigger="keyup changed delay:500ms, search" 
+           hx-target="#tasks" 
+           hx-indicator=".htmx-indicator">
+    
+    <span class="htmx-indicator" style="font-size: 0.8rem; color: var(--primary);">Buscando...</span>
+</div>
 
+<div id="tasks">
+    {% include "task_list_partial.html" %}
+</div>
         <div id="overlay-edit" class="overlay" style="display: none;">
             <form id="modal-edit" >
                 <div id="fechar-tool-modal">

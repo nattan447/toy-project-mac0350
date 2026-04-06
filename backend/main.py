@@ -5,6 +5,7 @@ from fastapi.responses import RedirectResponse, HTMLResponse
 from database.database import Aluno,Aluno_tarefa,Tarefa,Disciplina ,Matricula , create_db_and_tables,engine
 from sqlmodel import SQLModel, Field, Session, create_engine,select
 from fastapi.templating import Jinja2Templates
+from typing import Optional 
 
 app = FastAPI()
 # Monta a pasta "static" na rota "/static"
@@ -34,19 +35,41 @@ def criar_aluno(nome : str = Form(...),email: str = Form(...),senha: str = Form(
     return redirect
     
 @app.get("/home")
-def carrega_home(request: Request,conta_id: str = Cookie(None)):
+def carrega_home(request: Request, search: Optional[str] = None, conta_id: str = Cookie(None)):
     if not conta_id:
-        return {"erro": "conta não encontrada"}
+        return RedirectResponse(url="/login", status_code=303)
+    
     with Session(engine) as session:
-        conta =  session.get(Aluno, int(conta_id)) ## pega o id do cookie do cara que logou
         query = (
             select(Tarefa, Disciplina)
-            .join(Disciplina, Tarefa.disciplina_id == Disciplina.id)
+            .join(Disciplina, Tarefa.disciplina_id == Disciplina.id) 
             .join(Aluno_tarefa, Tarefa.id == Aluno_tarefa.tarefa_id)
             .where(Aluno_tarefa.aluno_id == int(conta_id))
         )
+        
+        if search:
+            query = query.where(
+                (Tarefa.nome.ilike(f"%{search}%")) | 
+                (Disciplina.nome.ilike(f"%{search}%"))
+            )
+            
         result = session.exec(query).all()
-        return templates.TemplateResponse(request=request,name="home.html",context={"tasks_aluno_disciplinas":result})
+
+        # Verifica se o target é tasks para retornar apenas a lista
+        if request.headers.get("HX-Target") == "tasks":
+            return templates.TemplateResponse(
+                request=request,
+                name="task_list_partial.html", 
+                context={"tasks_aluno_disciplinas": result}
+            )
+
+        return templates.TemplateResponse(
+            request=request,
+            name="home.html",
+            context={"tasks_aluno_disciplinas": result}
+        )
+
+
 
 
 @app.get("/login")
